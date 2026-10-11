@@ -21,3 +21,5 @@ If such a process is detected, it may trigger further inspection or potentially 
 ---
 
 *Research hypothesis — further evidence is required.*
+
+<img width="1331" height="751" alt="image" src="https://github.com/user-attachments/assets/c9fd20d1-1746-4730-8e96-719a2cbef6f6" />

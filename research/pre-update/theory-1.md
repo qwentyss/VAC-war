@@ -99,4 +99,12 @@ This provides a baseline for comparing publicly observable behavior before and a
 
 The next stage of research will examine post-update observations and determine which differences can be supported by evidence.
 
+## References
+
+The following public resources provide background material for this research. They should not be interpreted as independent confirmation of every claim in this document.
+
+Aspasia1337/cs2-vac-internals
+GitHub/CS2-Anticheat (analysis June 2023)
+GitHub/VAC-modules (historical module analysis)
+
 ---

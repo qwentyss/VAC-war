@@ -26,3 +26,6 @@
 
 ### Common Naming Variants
 `cheatloader` · `hacktool` · `aimassist` · `aimbotv2` · `espv2` · `vacguard` · `vacfix` · `vacfree` · `novac` · `anticheatbypass` · `gameinjector` · `dllloader` · `memoryeditor` · `processscanner` · `gameassistant` · `externaltool` · `internaltool` · `undetectedcheat`
+
+### Known Cheat Project Names
+`Osiris` · `Aimware` · `Neverlose` · `Gamesense` · `Skeet` · `Onetap` · `Fatality` · `ev0lve` · `Iniuria` · `Nixware` · `Fanta` · `NovolineHook` · `Mutiny` · `Exile` · `Primordial` · ` rifk7` · `Huzuni` · `Ezfrags` · `Kiduahook` · `Raigeki` · `Pharons` · `Valthrun` · `DragonBurn` · `Deadlocked` · `Osiris-Engine` · `BetterOsiris`

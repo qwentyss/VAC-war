@@ -170,6 +170,17 @@ The roadmap is provisional and may change as the project develops.
 
 **Primary Focus:** Documenting and evaluating theories concerning reported VAC behavior changes.
 
+**Phase:** Test Preparation
+
+Preparation for testing Theory 1 is currently underway. The testing software and test accounts are being prepared. Validation has not started yet.
+
+### Preparation Checklist
+
+- [x] Prepare the testing software
+- [x] Set up the test accounts
+- [ ] Verify the testing environment
+- [ ] Begin testing Theory 1
+
 This repository is a work in progress. Conclusions may be revised, narrowed, or withdrawn when new evidence becomes available.
 
 ---

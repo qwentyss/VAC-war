@@ -22,13 +22,13 @@ This project investigates VAC's detection mechanisms, examines potential behavio
 
 Research into the reported architecture and behavior of VAC before the October 9, 2026 update.
 
-- [Theory 1 — VAC Before the October 2026 Update](research/pre-update/theory-1.md)
+- [Theory 1 — VAC Before the October 2026 Update](research/pre-update/first-theory/theory-1.md)
 
 ### Stage 1 — Post-Update Analysis
 
 Investigation of possible changes following the October 9, 2026 update.
 
-- [Theory 1 — VAC After the October 2026 Update](research/post-update/theory-2.md)
+- [Theory 1 — VAC After the October 2026 Update](research/post-update/first-theory/theory-1.md)
 
 ### External References
 

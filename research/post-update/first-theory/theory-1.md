@@ -1,4 +1,4 @@
-# Theory 2 — VAC After the October 2026 Update
+# Theory 1 — VAC After the October 2026 Update
 
 > **Status:** Unconfirmed Theory  
 > **Focus:** Process Name Detection  

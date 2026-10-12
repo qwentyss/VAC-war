@@ -1,7 +1,7 @@
 # Theory 1 — VAC After the October 2026 Update
 
 > **Status:** Unconfirmed Theory  
-> **Focus:** Process Name Detection  
+> **Focus:** Process Name Detection & Behavioral Analysis  
 > **Period:** After October 9, 2026
 
 ---
@@ -86,3 +86,49 @@ The theory remains unconfirmed. Its purpose is to document a potential explanati
 *Independent research — hypothesis, not a confirmed VAC detection mechanism.*
 
 <img width="1331" height="751" alt="image" src="https://github.com/user-attachments/assets/c9fd20d1-1746-4730-8e96-719a2cbef6f6" />
+
+---
+
+# Additional Theory — Behavioral and Window Analysis
+
+Another possibility worth investigating is whether anti-cheat analysis considers broader information about the running game and its surrounding software environment, rather than relying exclusively on individual process names.
+
+Anti-cheat systems can theoretically collect different types of contextual information, such as application metadata, process information, window properties, or unusual runtime behavior. Whether VAC uses any particular combination of these signals must be established independently.
+
+## 1. Gameplay Behavior
+
+One question is whether changes in gameplay behavior could cause additional scrutiny or be evaluated alongside other detection signals.
+
+In this hypothetical model, unusual behavior might be identified through game-state information or other telemetry. However, suspicious gameplay alone does not establish that VAC performs a deeper inspection of running processes.
+
+The relationship between gameplay analysis and client-side anti-cheat checks remains unknown.
+
+## 2. Running Process Inspection
+
+Another possibility is that process-related information could be considered when investigating suspicious activity.
+
+Potentially relevant information could include process metadata, loaded modules, executable properties, or relationships between running applications.
+
+This does not establish that VAC scans every process, searches for particular keywords, or automatically bans users based on process names. Each of these claims would require separate evidence.
+
+## 3. Window Names and Application Metadata
+
+Window titles and application metadata are another area that could be investigated independently.
+
+Some applications display descriptive window titles, while others use generic names or change their titles dynamically. A window title is not necessarily the same as an executable filename or process name, and these should be treated as separate data sources.
+
+It is currently unknown whether VAC uses window titles as a detection signal or whether such information is relevant to the reported bans.
+
+## 4. Combining Multiple Indicators
+
+A broader hypothesis is that an anti-cheat system could evaluate multiple independent signals rather than relying on a single match.
+
+For example, process metadata, module integrity, runtime observations, and gameplay telemetry could theoretically provide different kinds of information.
+
+This is a general model of multi-signal analysis, not a verified description of VAC's current implementation.
+
+## Conceptual Investigation Flow
+
+The following diagram illustrates a possible research model. It does not represent a confirmed VAC pipeline.
+
+<img width="1245" height="533" alt="image" src="https://github.com/user-attachments/assets/48a3860b-a6a6-4972-aee3-3845332c4364" />

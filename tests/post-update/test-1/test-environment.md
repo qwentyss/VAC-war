@@ -6,18 +6,18 @@
 
 | Field                      | Value            |
 |----------------------------|------------------|
-| Test start date            | Not yet recorded |
+| Test start date            | 17.10.2026       |
 | Operating system           | Windows 11 Home  |
 | Operating system version   | 24H2             |
 | CPU architecture           | x64              |
 | CS2 build/version          | 9 october update |
-| Relevant software versions | Steam version    |
+| Relevant software versions | CS2: 14190 build |
 | Test environment type      | Local Windows PC |
 
 ## 2. Environment Verification
 
 - [x] Operating system and version recorded
-- [ ] Game build recorded
+- [x] Game build recorded
 - [x] Relevant software versions recorded
 - [ ] Baseline observations recorded where available
 - [ ] Logging and evidence collection checked

@@ -10,7 +10,6 @@ The software and its identifying names have been renamed for the experiment to i
 
 - **Research stage:** Post-update
 - **Target hypothesis:** Theory 1
-- **Test reference:** [`tests/post-update/test-1/`](../tests/post-update/test-1/)
 - **Test status:** Pending
 
 ## Experimental Notes

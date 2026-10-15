@@ -57,9 +57,9 @@ The first post-update experiment is planned for October 17–25, 2026. The propo
 
 ### Preparation Checklist
 
-- [ ] Finalize the test plan
-- [ ] Document the test environment
-- [ ] Verify the test environment
+- [x] Finalize the test plan
+- [x] Document the test environment
+- [x] Verify the test environment
 - [ ] Conduct the experiment
 - [ ] Record observations
 - [ ] Evaluate the results

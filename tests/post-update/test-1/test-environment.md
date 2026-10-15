@@ -10,8 +10,8 @@
 | Operating system           | Windows 11 Home  |
 | Operating system version   | 24H2             |
 | CPU architecture           | x64              |
-| CS2 build/version          | 9 october update |
-| Relevant software versions | CS2: 14190 build |
+| CS2 build/version          | 15.10 update     |
+| Relevant software versions | CS2: 14191 build |
 | Test environment type      | Local Windows PC |
 
 ## 2. Environment Verification

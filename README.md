@@ -20,10 +20,11 @@ VAC-war/
 │   │   └── first-theory/
 │   │       └── theory-1.md
 │   └── post-update/
-│       └── first-theory/
-│           ├── theory-1.md
-│           ├── theory-2.md
-│           └── keywords.md
+│       ├── first-theory/
+│       │   ├── theory-1.md
+│       │   └── keywords.md
+│       └── second-theory/
+│           └── theory-2.md
 └── tests/
     └── post-update/
         └── test-1/

@@ -78,7 +78,6 @@ type Offset struct {
 	M_nodeToWorld          uintptr `json:"m_nodeToWorld"`
 	M_sSanitizedPlayerName uintptr `json:"m_sSanitizedPlayerName"`
 
-	// C_CSGameRules
 	M_bIsValveDS             uintptr `json:"m_bIsValveDS"`
 	M_bIsQueuedMatchmaking   uintptr `json:"m_bIsQueuedMatchmaking"`
 	M_nQueuedMatchmakingMode uintptr `json:"m_nQueuedMatchmakingMode"`
@@ -153,6 +152,7 @@ var (
 	updateWindowProc         = user32.NewProc("UpdateWindow")
 	getWindowTextW           = user32.NewProc("GetWindowTextW")
 	getClassNameW            = user32.NewProc("GetClassNameW")
+	isWindow                 = user32.NewProc("IsWindow")
 )
 
 const (
@@ -167,6 +167,7 @@ const (
 	SWP_SHOWWINDOW   = 0x0040
 	WS_EX_TOPMOST    = 0x00000008
 	WS_EX_TOOLWINDOW = 0x00000080
+	WS_EX_NOACTIVATE = 0x08000000
 	WS_CAPTION       = 0x00C00000
 	WS_SYSMENU       = 0x00080000
 	WS_THICKFRAME    = 0x00040000
@@ -188,6 +189,7 @@ var (
 	running         bool = true
 	whitePen        uintptr
 	menuWindow      win.HWND
+	menuRenderChild win.HWND
 	listeningForKey int = -1
 	webView         webview2.WebView
 	webViewMutex    sync.Mutex
@@ -992,12 +994,10 @@ func findRenderChild(parent win.HWND) win.HWND {
 
 		if className == "Chrome_WidgetWin_1" ||
 			className == "Chrome_RenderWidgetHostHWND" ||
-			className == "Chrome_WidgetWin_0" {
-			vis, _, _ := isWindowVisible.Call(uintptr(hwnd))
-			if vis != 0 {
-				found = hwnd
-				return 0
-			}
+			className == "Chrome_WidgetWin_0" ||
+			className == "Chrome_WidgetWin_2" {
+			found = hwnd
+			return 0
 		}
 		return 1
 	})
@@ -1055,25 +1055,25 @@ func forceForeground(hwnd win.HWND) {
 
 	bringWindowToTop.Call(uintptr(hwnd))
 
-	ret, _, _ := setForegroundWindow.Call(uintptr(hwnd))
-	fmt.Printf("[forceForeground] SetForegroundWindow = %d\n", ret)
-
-	if ret == 0 {
-		fg, _, _ := getForegroundWindow.Call()
-		if fg != 0 {
-			fgThread, _, _ := getWindowThreadProcessId.Call(fg, 0)
-			curThread, _, _ := getCurrentThreadId.Call()
-
-			if fgThread != 0 && fgThread != curThread {
-				attachThreadInput.Call(fgThread, curThread, 1)
-				ret2, _, _ := setForegroundWindow.Call(uintptr(hwnd))
-				attachThreadInput.Call(fgThread, curThread, 0)
-				fmt.Printf("[forceForeground] SetForegroundWindow (attached) = %d\n", ret2)
-			}
+	curThread, _, _ := getCurrentThreadId.Call()
+	fg, _, _ := getForegroundWindow.Call()
+	if fg != 0 {
+		fgThread, _, _ := getWindowThreadProcessId.Call(fg, 0)
+		if fgThread != 0 && fgThread != curThread {
+			attachThreadInput.Call(fgThread, curThread, 1)
+			setForegroundWindow.Call(uintptr(hwnd))
+			setFocus.Call(uintptr(hwnd))
+			attachThreadInput.Call(fgThread, curThread, 0)
+		} else {
+			setForegroundWindow.Call(uintptr(hwnd))
+			setFocus.Call(uintptr(hwnd))
 		}
+	} else {
+		setForegroundWindow.Call(uintptr(hwnd))
+		setFocus.Call(uintptr(hwnd))
 	}
 
-	setFocus.Call(uintptr(hwnd))
+	time.Sleep(50 * time.Millisecond)
 
 	renderChild := findRenderChild(hwnd)
 	if renderChild != 0 {
@@ -1081,20 +1081,37 @@ func forceForeground(hwnd win.HWND) {
 	}
 }
 
-func showMenu() {
+func activateWebViewWindow() {
 	if menuWindow == 0 {
 		return
 	}
 
 	exStyle, _, _ := getWindowLongPtrW.Call(uintptr(menuWindow), uintptr(GWL_EXSTYLE))
 	newStyle := exStyle | WS_EX_TOPMOST | WS_EX_TOOLWINDOW
+	newStyle &^= uintptr(WS_EX_NOACTIVATE)
 	setWindowLongPtrW.Call(uintptr(menuWindow), uintptr(GWL_EXSTYLE), newStyle)
+
+	setWindowPos.Call(
+		uintptr(menuWindow),
+		HWND_TOPMOST,
+		0, 0, 0, 0,
+		SWP_NOMOVE|SWP_NOSIZE|SWP_FRAMECHANGED|SWP_SHOWWINDOW,
+	)
+
+	forceForeground(menuWindow)
+}
+
+func showMenu() {
+	if menuWindow == 0 {
+		return
+	}
 
 	showWindowProc.Call(uintptr(currentHwnd), SW_HIDE)
 
 	showWindowProc.Call(uintptr(menuWindow), SW_SHOW)
 	updateWindowProc.Call(uintptr(menuWindow))
-	forceForeground(menuWindow)
+
+	activateWebViewWindow()
 
 	menuOpen = true
 	fmt.Println("[showMenu] menu opened")
@@ -1105,14 +1122,16 @@ func hideMenu() {
 		return
 	}
 
-	showWindowProc.Call(uintptr(menuWindow), SW_HIDE)
 	menuOpen = false
+
+	showWindowProc.Call(uintptr(menuWindow), SW_HIDE)
 
 	if gameHwnd != 0 {
 		allowSetForegroundWindow.Call(ASFW_ANY)
 		setForegroundWindow.Call(uintptr(gameHwnd))
+		setFocus.Call(uintptr(gameHwnd))
 	}
-	fmt.Println("[hideMenu] menu hidden, focus returned to game")
+	fmt.Println("[hideMenu] menu hidden")
 }
 
 func isGameInFocus() bool {
@@ -3146,6 +3165,20 @@ func main() {
 		}()
 		w.SetSize(460, 650, webview2.HintNone)
 
+		go func() {
+			var hw win.HWND = 0
+			for i := 0; i < 2000; i++ {
+				hw = findWebViewWindowFast()
+				if hw != 0 {
+					win.ShowWindow(hw, win.SW_HIDE)
+					time.Sleep(20 * time.Millisecond)
+					win.ShowWindow(hw, win.SW_HIDE)
+					return
+				}
+				time.Sleep(2 * time.Millisecond)
+			}
+		}()
+
 		w.Bind("toggleFunction", func(index int, value bool) {
 			if cfg == nil {
 				return
@@ -3271,10 +3304,8 @@ func main() {
 
 		w.Navigate(fileURL)
 
-		time.Sleep(1500 * time.Millisecond)
-
 		go func() {
-			for i := 0; i < 100; i++ {
+			for i := 0; i < 2000; i++ {
 				hw := findWebViewWindowFast()
 				if hw != 0 {
 					win.ShowWindow(hw, win.SW_HIDE)
@@ -3289,6 +3320,7 @@ func main() {
 
 					exStyle, _, _ := getWindowLongPtrW.Call(uintptr(hw), uintptr(GWL_EXSTYLE))
 					newExStyle := exStyle | WS_EX_TOPMOST | WS_EX_TOOLWINDOW
+					newExStyle &^= uintptr(WS_EX_NOACTIVATE)
 					setWindowLongPtrW.Call(uintptr(hw), uintptr(GWL_EXSTYLE), newExStyle)
 
 					setWindowPos.Call(
@@ -3298,10 +3330,12 @@ func main() {
 						SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_FRAMECHANGED,
 					)
 
+					win.ShowWindow(hw, win.SW_HIDE)
+
 					webViewReady <- hw
 					return
 				}
-				time.Sleep(20 * time.Millisecond)
+				time.Sleep(2 * time.Millisecond)
 			}
 			webViewReady <- 0
 		}()
@@ -3316,7 +3350,7 @@ func main() {
 	win.ShowWindow(menuWindow, win.SW_HIDE)
 	menuOpen = false
 
-	time.Sleep(500 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 
 	pid, err := findProcessId("cs2.exe")
 	if err != nil {
@@ -3392,16 +3426,11 @@ func main() {
 					win.SetWindowPos(currentHwnd, win.HWND_TOPMOST, 0, 0,
 						int32(screenWidth), int32(screenHeight),
 						win.SWP_NOACTIVATE|win.SWP_SHOWWINDOW)
-				} else {
-					showMenu()
 				}
 			} else {
 				if isAnyOfOurWindowsInFocus() {
 				} else {
 					win.ShowWindow(currentHwnd, win.SW_HIDE)
-					if menuOpen && menuWindow != 0 {
-						showWindowProc.Call(uintptr(menuWindow), SW_HIDE)
-					}
 				}
 			}
 			wasInFocus = isInFocus
@@ -3412,9 +3441,7 @@ func main() {
 				win.SWP_NOMOVE|win.SWP_NOSIZE|win.SWP_NOACTIVATE)
 		}
 
-		inputAllowed := isInputAllowed()
-
-		if inputAllowed {
+		if isInFocus {
 			if listeningForKey != -1 {
 				for keyCode := 0x01; keyCode <= 0xFE; keyCode++ {
 					if keyCode == 0x01 {
@@ -3451,7 +3478,7 @@ func main() {
 				}
 			}
 
-			if isInFocus && cfg != nil && cfg.KeyOpenGUI != "None" && cfg.KeyOpenGUI != "" {
+			if cfg != nil && cfg.KeyOpenGUI != "None" && cfg.KeyOpenGUI != "" {
 				keyCode := stringToKey(cfg.KeyOpenGUI)
 				if keyCode != 0 && keyCode != 0x01 {
 					currentState := getKeyState(keyCode)
@@ -3502,12 +3529,59 @@ func main() {
 			}
 		}
 
-		if !isInFocus {
-			time.Sleep(50 * time.Millisecond)
+		if menuOpen {
+			if cfg != nil && cfg.KeyOpenGUI != "None" && cfg.KeyOpenGUI != "" {
+				keyCode := stringToKey(cfg.KeyOpenGUI)
+				if keyCode != 0 && keyCode != 0x01 {
+					currentState := getKeyState(keyCode)
+					if currentState && !prevKeyStates[keyCode] {
+						hideMenu()
+					}
+					prevKeyStates[keyCode] = currentState
+				}
+			}
+
+			if listeningForKey != -1 {
+				for keyCode := 0x01; keyCode <= 0xFE; keyCode++ {
+					if keyCode == 0x01 {
+						continue
+					}
+					if keyCode == 0x0A || keyCode == 0x0B || keyCode == 0x5E || keyCode == 0x5F {
+						continue
+					}
+					if getKeyState(keyCode) {
+						keyName := "None"
+						if keyCode != 0x1B {
+							keyName = keyToString(keyCode)
+						}
+
+						index := listeningForKey
+						listeningForKey = -1
+
+						removeKeyBindFromOtherFunctions(keyName, index)
+
+						switch index {
+						case 7:
+							cfg.KeyScreenProtection = keyName
+						case 11:
+							cfg.KeyESP = keyName
+						case 12:
+							cfg.KeyOpenGUI = keyName
+						}
+
+						SaveConfig(cfg, configPath)
+						updateAllUI()
+
+						break
+					}
+				}
+			}
+
+			time.Sleep(15 * time.Millisecond)
 			continue
 		}
 
-		if menuOpen {
+		if !isInFocus {
 			time.Sleep(50 * time.Millisecond)
 			continue
 		}

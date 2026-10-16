@@ -1,6 +1,6 @@
 # Post-Update Test 1
 
-**Status:** Planned
+**Status:** In progress
 
 **Research phase:** Post-update
 
@@ -14,7 +14,7 @@
 
 Evaluate whether the available observations support, contradict, or leave unresolved the hypothesis described in Post-Update Theory 1.
 
-The experiment is exploratory. It does not assume that the proposed detection mechanism exists.
+The experiment is exploratory and does not assume that the proposed detection mechanism exists.
 
 ## Test Documents
 
@@ -24,19 +24,19 @@ The experiment is exploratory. It does not assume that the proposed detection me
 
 ## Progress
 
-- [ ] Finalize the test plan
-- [ ] Document the test environment
-- [ ] Verify the environment
-- [ ] Conduct the planned observations
-- [ ] Complete the observation log
-- [ ] Evaluate the findings
+- [x] Finalize the test plan
+- [x] Document the test environment
+- [x] Verify the environment
+- [x] Complete the planned observations
+- [x] Review the observation log
+- [x] Evaluate the findings
 
 ## Important Limitations
 
-Fifteen matches without an observed ban would establish only that no ban was observed during the recorded period. It would not prove that VAC did not detect anything or that the hypothesis was correct.
+A single observed ban does not establish its cause or confirm the proposed hypothesis. Likewise, the absence of an observed ban during a limited period would not prove that the software went undetected.
 
-Detection and enforcement may not be immediately observable. Any conclusion must account for the observation window, missing evidence, and alternative explanations.
+Detection and enforcement may not be immediately observable. Conclusions must account for the observation window, missing evidence, and alternative explanations.
 
 ## Reporting
 
-Record each observation in `results.md`. Do not mark the test as completed until the planned observations have been recorded and reviewed.
+Record observations, timestamps, and available evidence in `results.md`. Keep observations separate from interpretations, and document incomplete or interrupted sessions. Do not mark the test as completed until the recorded data have been reviewed.

@@ -6,7 +6,7 @@
 
 **Related theory:** [Theory 1](../../../research/post-update/first-theory/theory-1.md)
 
-**Scheduled test window:** October 17–25, 2026
+**Scheduled test window:** October 16–25, 2026
 
 **Planned sample:** 15 matches
 

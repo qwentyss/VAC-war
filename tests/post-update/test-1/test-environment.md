@@ -6,7 +6,7 @@
 
 | Field                      | Value            |
 |----------------------------|------------------|
-| Test start date            | 17.10.2026       |
+| Test start date            | 16.10.2026       |
 | Operating system           | Windows 11 Home  |
 | Operating system version   | 24H2             |
 | CPU architecture           | x64              |

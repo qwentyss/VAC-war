@@ -16,7 +16,7 @@ This hypothesis remains unverified. The test must not assume that VAC uses keywo
 
 **Target sample:** 15 matches
 
-**Planned window:** October 17–25, 2026
+**Planned window:** October 16–25, 2026
 
 Record the actual number of completed matches. If the planned sample cannot be completed, document the reason.
 

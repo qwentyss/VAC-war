@@ -1,6 +1,6 @@
 # Post-Update Test 1
 
-**Status:** In progress
+**Status:** Stopped
 
 **Research phase:** Post-update
 

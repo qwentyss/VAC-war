@@ -42,7 +42,7 @@ VAC-war/
 |---|---|---|
 | [Pre-Update Theory 1](research/pre-update/first-theory/theory-1.md) | Preliminary overview of possible VAC detection mechanisms | Preliminary |
 | [Post-Update Theory 1](research/post-update/first-theory/theory-1.md) | Hypothesis concerning possible process-name inspection | Not supported by the available test evidence |
-| [Post-Update Theory 2](research/post-update/first-theory/theory-2.md) | Conceptual hypothesis about context-aware ESP and in-game perception | Proposed — unverified |
+| [Post-Update Theory 2](research/post-update/second-theory/theory-2.md) | Conceptual hypothesis about context-aware ESP and in-game perception | Proposed — unverified |
 | [Exploratory Keywords](research/post-update/first-theory/keywords.md) | Unverified terms examined in connection with Theory 1 | Preliminary findings documented |
 
 ## Test Registry

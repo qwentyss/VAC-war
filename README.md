@@ -27,7 +27,12 @@ VAC-war/
 │           └── theory-2.md
 └── tests/
     └── post-update/
-        └── test-1/
+        ├── test-1/
+        │   ├── README.md
+        │   ├── test-plan.md
+        │   ├── test-environment.md
+        │   └── results.md
+        └── test-2/
             ├── README.md
             ├── test-plan.md
             ├── test-environment.md
@@ -50,8 +55,9 @@ VAC-war/
 | Test | Related Research | Status |
 |---|---|---|
 | [Post-Update Test 1](tests/post-update/test-1/README.md) | [Post-Update Theory 1](research/post-update/first-theory/theory-1.md) | Stopped — preliminary findings recorded |
+| [Post-Update Test 2](tests/post-update/test-2/README.md) | [Post-Update Theory 2](research/post-update/second-theory/theory-2.md) | Planned — starts October 18, 2026 |
 
-Theory 2 has not been established by the observations from Test 1. It should be evaluated separately if additional research is conducted.
+Theory 2 has not been established by the observations from Test 1. Test 2 is a separate research record; its conclusions must be based on its own documented evidence.
 
 ## Current Project Status
 
